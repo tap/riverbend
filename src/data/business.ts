@@ -39,7 +39,7 @@ export const business = {
 
   // ── Still to confirm with the owner (PROJECT_BRIEF.md §4 & §11) ──
   // Leave as empty strings/null until provided; templates check before rendering.
-  email: "", // TODO(owner): confirm email address
+  email: "info@riverbendhandymankc.com", // forwards to the owner via Cloudflare Email Routing
   address: null as string | null, // service-area business, no storefront? TODO(owner): confirm
   social: {
     facebook: "", // TODO(owner): Facebook page URL
