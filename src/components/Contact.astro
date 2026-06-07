@@ -1,0 +1,278 @@
+---
+// Contact / Request a Quote section (PROJECT_BRIEF.md §6 "Contact / Request a Quote").
+// Primary conversion goal of the whole site. Left column = ways to reach us (phone
+// is the biggest element; texting a photo is encouraged). Right column = the quote
+// form, which POSTs to the /api/quote Cloudflare function.
+//
+// No photo upload (v1 decision) — homeowners are pointed to text a photo instead.
+// No JS: a plain form POST → function → /thank-you redirect.
+
+import { business } from "../data/business.ts";
+import { services } from "../data/services.ts";
+import Icon from "./Icon.astro";
+
+// `sms:` link so tapping "Text us" opens a pre-addressed text on a phone.
+const smsHref = `sms:${business.phone.href.replace("tel:", "")}`;
+---
+
+<section id="contact" class="contact">
+  <div class="container contact__grid">
+    <!-- Left: ways to reach us -->
+    <div class="contact__reach">
+      <p class="eyebrow">Get in touch</p>
+      <h2>Request a free quote</h2>
+      <p class="contact__intro">
+        Tell us what's going on and we'll get back to you — usually within one business
+        day. No obligation, no pressure.
+      </p>
+
+      <a href={business.phone.href} class="contact__phone">
+        📞 {business.phone.display}
+      </a>
+
+      <ul class="contact__list" role="list">
+        <li>
+          <Icon name="pin" size="1.2rem" />
+          <span>Serving the {business.serviceArea}</span>
+        </li>
+        <li>
+          <Icon name="clock" size="1.2rem" />
+          <span>{business.hours}</span>
+        </li>
+      </ul>
+
+      <a href={smsHref} class="contact__text">
+        <strong>Got a photo of the problem?</strong>
+        <span>Text it to us at {business.phone.display} — it helps us quote faster.</span>
+      </a>
+    </div>
+
+    <!-- Right: the quote form -->
+    <form class="contact__form" action="/api/quote" method="POST">
+      <!-- Honeypot: hidden from people, tempting to bots. If filled, we drop it. -->
+      <div class="hp" aria-hidden="true">
+        <label>Company<input type="text" name="company" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      <div class="field">
+        <label for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="phone">Phone <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="location">Address or ZIP</label>
+        <input type="text" id="location" name="location" autocomplete="postal-code" />
+      </div>
+
+      <div class="field">
+        <label for="service">Type of work</label>
+        <select id="service" name="service">
+          <option value="">Not sure / general</option>
+          {services.map((s) => <option value={s.title}>{s.title}</option>)}
+          <option value="Other">Something else</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="description">What do you need done? <span class="req">*</span></label>
+        <textarea id="description" name="description" rows="4" required
+          placeholder="A few details about the job…"></textarea>
+      </div>
+
+      <fieldset class="field contact__method">
+        <legend>Best way to reach you</legend>
+        <label><input type="radio" name="contact_method" value="Call" checked /> Call</label>
+        <label><input type="radio" name="contact_method" value="Text" /> Text</label>
+        <label><input type="radio" name="contact_method" value="Email" /> Email</label>
+      </fieldset>
+
+      <button type="submit" class="btn btn--primary contact__submit">Request My Free Quote</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    background: var(--cream-panel);
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+
+  .contact__reach h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0 0 0.75rem;
+  }
+  .contact__intro {
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+  }
+
+  .contact__phone {
+    display: inline-block;
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    font-weight: 800;
+    color: var(--brown);
+    text-decoration: none;
+    margin-bottom: 1.25rem;
+  }
+  .contact__phone:hover {
+    color: var(--rust-dark);
+  }
+
+  .contact__list {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .contact__list li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--ink-soft);
+  }
+
+  .contact__text {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--rust);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .contact__text strong {
+    display: block;
+    color: var(--brown);
+    margin-bottom: 0.2rem;
+  }
+  .contact__text span {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  /* ── Form ── */
+  .contact__form {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink);
+  }
+  .req {
+    color: var(--rust-dark);
+  }
+
+  input,
+  select,
+  textarea {
+    font: inherit;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--cream);
+    color: var(--ink);
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 2px solid var(--rust);
+    outline-offset: 1px;
+    border-color: var(--rust);
+  }
+  textarea {
+    resize: vertical;
+  }
+
+  .contact__method {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .contact__method legend {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+    padding: 0;
+  }
+  .contact__method label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-right: 1.25rem;
+    font-weight: 500;
+  }
+
+  .contact__submit {
+    justify-content: center;
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* Visually-hidden honeypot. */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 760px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

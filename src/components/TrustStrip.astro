@@ -1,0 +1,95 @@
+---
+// Trust strip — sits directly under the hero (PROJECT_BRIEF.md §6 #2).
+// Quick, scannable reasons to trust the business. Static "claim" badges always
+// show; numeric proof points (years, Google rating) only appear once `proof`
+// has real values, so we never display invented numbers.
+
+import Icon from "./Icon.astro";
+import { proof } from "../data/business.ts";
+
+// Claims the business can stand behind without supplied numbers.
+const badges = [
+  { icon: "shield", label: "Licensed & Insured" },
+  { icon: "pin", label: "Locally Owned" },
+  { icon: "check", label: "Free Estimates" },
+  { icon: "clock", label: "On-Time, Every Time" },
+];
+
+// Optional number-backed proof points (rendered only when present).
+const stats = [
+  proof.yearsExperience && {
+    icon: "shield",
+    value: `${proof.yearsExperience}+`,
+    label: "Years of experience",
+  },
+  proof.googleRating && {
+    icon: "star",
+    value: `${proof.googleRating}★`,
+    label: proof.reviewCount ? `From ${proof.reviewCount} Google reviews` : "Google rating",
+  },
+].filter(Boolean) as { icon: string; value: string; label: string }[];
+---
+
+<section class="trust" aria-label="Why choose us">
+  <div class="container trust__inner">
+    {
+      badges.map((b) => (
+        <div class="trust__item">
+          <Icon name={b.icon} size="1.4rem" />
+          <span class="trust__label">{b.label}</span>
+        </div>
+      ))
+    }
+
+    {
+      stats.map((s) => (
+        <div class="trust__item trust__item--stat">
+          <Icon name={s.icon} size="1.4rem" />
+          <span class="trust__label">
+            <strong>{s.value}</strong> {s.label}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .trust {
+    background: var(--brown);
+    color: var(--cream);
+  }
+
+  .trust__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem 2.5rem;
+    padding-block: 1.1rem;
+  }
+
+  .trust__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .trust__label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  .trust__label strong {
+    font-weight: 800;
+  }
+
+  @media (max-width: 540px) {
+    .trust__inner {
+      gap: 0.9rem 1.5rem;
+    }
+    .trust__label {
+      font-size: 0.88rem;
+      white-space: normal;
+    }
+  }
+</style>

@@ -1,0 +1,138 @@
+---
+// Services overview section for the homepage (PROJECT_BRIEF.md §6 #3).
+// The id="services" is what the header nav links scroll to.
+
+import { services } from "../data/services.ts";
+import Icon from "./Icon.astro";
+---
+
+<section id="services" class="services">
+  <div class="container">
+    <header class="services__head">
+      <p class="eyebrow">What we do</p>
+      <h2>Handyman services for your whole home</h2>
+      <p class="services__intro">
+        One call for the repairs and projects on your list. If it's a small job around
+        the house, there's a good chance we handle it.
+      </p>
+    </header>
+
+    <ul class="services__grid" role="list">
+      {
+        services.map((service) => (
+          <li class="card">
+            <span class="card__icon-wrap" aria-hidden="true">
+              <Icon name={service.icon} size="1.6rem" />
+            </span>
+            <h3 class="card__title">{service.title}</h3>
+            <p class="card__blurb">{service.blurb}</p>
+            <ul class="card__list" role="list">
+              {service.examples.map((ex) => <li>{ex}</li>)}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="services__note">
+      Bigger plumbing or electrical project that legally needs a licensed contractor?
+      We'll tell you straight and point you to a pro we trust.
+    </p>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+
+  .services__head {
+    max-width: 42rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+
+  .services__head h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .services__intro {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .services__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(60, 42, 28, 0.1);
+  }
+
+  .card__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--cream-panel);
+    color: var(--brown);
+    margin-bottom: 1rem;
+  }
+  .card__title {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+  }
+  .card__blurb {
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+  .card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .card__list li {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--brown);
+    background: var(--cream-panel);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .services__note {
+    margin: 2.5rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+</style>

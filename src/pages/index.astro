@@ -4,6 +4,9 @@
 // slot in below the hero as their own components. See PROJECT_BRIEF.md §6.
 
 import BaseLayout from "../layouts/BaseLayout.astro";
+import TrustStrip from "../components/TrustStrip.astro";
+import Services from "../components/Services.astro";
+import Contact from "../components/Contact.astro";
 import { business } from "../data/business.ts";
 ---
 
@@ -14,10 +17,10 @@ import { business } from "../data/business.ts";
   <section class="hero">
     <div class="container hero__inner">
       <p class="hero__eyebrow">Serving the {business.serviceArea}</p>
-      <h1 class="hero__title">Honest, on-time handyman work for your home.</h1>
+      <h1 class="hero__title">Honest, on-time handyman for your home.</h1>
       <p class="hero__lead">
-        From nagging repairs to the projects on your list — {business.shortName} gets it
-        done right, shows up when we say we will, and cleans up after.
+        From nagging repairs to the projects on your list — {business.shortName} gets
+        it done right, shows up when we say we will, and cleans up after.
       </p>
 
       <div class="hero__cta">
@@ -31,17 +34,20 @@ import { business } from "../data/business.ts";
     </div>
   </section>
 
-  <!-- Placeholder anchor so the "Get a Quote" links land somewhere until the
-       real Contact section is built. -->
-  <section id="contact" class="container" style="padding-block: 3rem;">
-    <p style="color: var(--ink-soft);">Contact / quote form — coming next.</p>
-  </section>
+  <TrustStrip />
+
+  <Services />
+
+  <Contact />
 </BaseLayout>
 
 <style>
   .hero {
-    background:
-      linear-gradient(180deg, var(--cream) 0%, var(--cream-panel) 100%);
+    background: linear-gradient(
+      180deg,
+      var(--cream) 0%,
+      var(--cream-panel) 100%
+    );
     padding-block: clamp(3rem, 9vw, 6rem);
   }
 

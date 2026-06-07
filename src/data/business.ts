@@ -33,3 +33,16 @@ export const business = {
     googleBusiness: "", // TODO(owner): Google Business Profile URL (drives the most leads)
   },
 } as const;
+
+// Numeric social-proof shown in the trust strip. Each renders ONLY once it has a
+// real value — we don't ship invented stats. Fill these in when the owner confirms.
+// (Typed separately from `business` so TypeScript allows a number later.)
+export const proof: {
+  yearsExperience: number | null;
+  googleRating: number | null; // e.g. 4.9
+  reviewCount: number | null; // e.g. 37
+} = {
+  yearsExperience: null, // TODO(owner)
+  googleRating: null, // TODO(owner)
+  reviewCount: null, // TODO(owner)
+};

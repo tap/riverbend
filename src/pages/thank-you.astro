@@ -1,0 +1,44 @@
+---
+// Confirmation page the quote form redirects to after a successful submission.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business.ts";
+---
+
+<BaseLayout
+  title="Thanks — We'll Be in Touch"
+  description="Thanks for your quote request. River Bend Handyman will get back to you, usually within one business day."
+>
+  <section class="ty">
+    <div class="container ty__inner">
+      <h1>Thanks — we got it!</h1>
+      <p class="ty__lead">
+        Your request is in. We'll get back to you, usually within one business day.
+      </p>
+      <p>
+        Need us sooner? Call or text us directly at
+        <a href={business.phone.href}>{business.phone.display}</a>.
+      </p>
+      <a href="/" class="btn btn--ghost ty__home">← Back to home</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ty {
+    padding-block: clamp(4rem, 12vw, 7rem);
+  }
+  .ty__inner {
+    max-width: 38rem;
+    text-align: center;
+  }
+  .ty__inner h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+  .ty__lead {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+  }
+  .ty__home {
+    margin-top: 1.5rem;
+  }
+</style>
