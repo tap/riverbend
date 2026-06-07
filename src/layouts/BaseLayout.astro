@@ -20,6 +20,41 @@ const { title, description } = Astro.props;
 
 // Title pattern from the brief: "Page — River Bend Handyman | Kansas City, MO"
 const fullTitle = `${title} | ${business.shortName} — ${business.location}`;
+
+// Absolute URLs (need the `site` from astro.config). Astro.site is that value.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/apple-touch-icon.png", Astro.site);
+
+// LocalBusiness structured data (PROJECT_BRIEF.md §8) — built from business.ts so the
+// NAP matches the rest of the site. Emitted on every page for consistency.
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: business.name,
+  url: Astro.site?.toString(),
+  image: ogImage.toString(),
+  telephone: business.phone.href.replace("tel:", ""),
+  ...(business.email ? { email: business.email } : {}),
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kansas City",
+    addressRegion: "MO",
+    addressCountry: "US",
+  },
+  areaServed: business.serviceAreaCities.map((city) => ({
+    "@type": "City",
+    name: city,
+  })),
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "17:00",
+    },
+  ],
+  slogan: business.tagline,
+};
 ---
 
 <!doctype html>
@@ -33,7 +68,19 @@ const fullTitle = `${title} | ${business.shortName} — ${business.location}`;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <!-- TODO: LocalBusiness schema markup + Open Graph tags go here later -->
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- LocalBusiness structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
   </head>
   <body>
     <Header />
