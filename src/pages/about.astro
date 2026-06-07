@@ -1,0 +1,164 @@
+---
+// About page (PROJECT_BRIEF.md "About"). Big trust driver — the owner photo and
+// personal story matter most here. Story/photo are PLACEHOLDERS until the owner
+// supplies real content (§11).
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business.ts";
+import Icon from "./../components/Icon.astro";
+
+const values = [
+  { icon: "clock", title: "On time", text: "We show up when we say we will — and call if anything changes." },
+  { icon: "check", title: "Clean work", text: "We treat your home with respect and clean up before we leave." },
+  { icon: "shield", title: "Honest pricing", text: "Clear estimates up front. No surprises when the job's done." },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Meet River Bend Handyman — locally owned, licensed and insured handyman service serving the Kansas City metro with honest, on-time work."
+>
+  <section class="about">
+    <div class="container about__intro">
+      <div class="about__text">
+        <p class="eyebrow">About us</p>
+        <h1>Your neighbor with a toolbox</h1>
+        <!-- TODO(owner): replace with the real story — why you started, local roots,
+             family, what you care about. Keep the plain-spoken, neighborly voice. -->
+        <p>
+          {business.name} was started right here in {business.location} on a simple idea:
+          that homeowners deserve a handyman who answers the phone, shows up on time, and
+          does honest work for a fair price.
+        </p>
+        <p>
+          Whether it's the repair you've been putting off or a whole list of small projects,
+          we treat your home like it's our own — and we stand behind the work.
+        </p>
+        <a href="/#contact" class="btn btn--primary">Get a Free Quote</a>
+      </div>
+
+      <!-- TODO(owner): swap this placeholder for a real owner photo via <Image>.
+           A friendly photo of the person who'll show up is the #1 trust driver here. -->
+      <figure class="about__photo" aria-label="Owner photo coming soon">
+        <Icon name="hammer" size="2.5rem" />
+        <figcaption>Owner photo coming soon</figcaption>
+      </figure>
+    </div>
+
+    <div class="container">
+      <ul class="about__values" role="list">
+        {
+          values.map((v) => (
+            <li class="value">
+              <span class="value__icon" aria-hidden="true">
+                <Icon name={v.icon} size="1.6rem" />
+              </span>
+              <h2 class="value__title">{v.title}</h2>
+              <p class="value__text">{v.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="about__lic">Licensed &amp; Insured · Locally owned and operated in the {business.serviceArea}.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: clamp(2.5rem, 7vw, 4.5rem);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+
+  .about__intro {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    margin-bottom: 3.5rem;
+  }
+  .about__text h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0 0 1rem;
+  }
+  .about__text p {
+    color: var(--ink-soft);
+    font-size: 1.08rem;
+    margin: 0 0 1rem;
+  }
+  .about__text .btn {
+    margin-top: 0.5rem;
+  }
+
+  .about__photo {
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    background: var(--cream-panel);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .about__photo figcaption {
+    font-size: 0.9rem;
+  }
+
+  .about__values {
+    list-style: none;
+    margin: 0 0 2.5rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+  }
+  .value {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--cream-panel);
+    border-radius: var(--radius);
+  }
+  .value__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--brown);
+    margin-bottom: 0.85rem;
+  }
+  .value__title {
+    font-size: 1.2rem;
+    margin: 0 0 0.35rem;
+  }
+  .value__text {
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .about__lic {
+    text-align: center;
+    font-weight: 600;
+    color: var(--brown);
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .about__intro {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

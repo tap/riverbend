@@ -1,0 +1,133 @@
+---
+// "How it works" — three reassuring steps (PROJECT_BRIEF.md §6 #7): Call → Free
+// estimate → We fix it. Lowers the friction of reaching out.
+
+import Icon from "./Icon.astro";
+
+const steps = [
+  {
+    icon: "phone",
+    title: "Give us a call",
+    text: "Tell us what's going on — call or text. A photo of the problem helps us help you faster.",
+  },
+  {
+    icon: "clipboard",
+    title: "Get a free estimate",
+    text: "We look it over and give you an honest, no-pressure price. No surprises later.",
+  },
+  {
+    icon: "wrench",
+    title: "We fix it",
+    text: "We show up when we said we would, do the job right, and clean up before we leave.",
+  },
+];
+---
+
+<section id="how-it-works" class="how">
+  <div class="container">
+    <header class="how__head">
+      <p class="eyebrow">How it works</p>
+      <h2>Getting your project done is simple</h2>
+    </header>
+
+    <ol class="how__steps">
+      {
+        steps.map((step, i) => (
+          <li class="step">
+            <div class="step__top">
+              <span class="step__num">{i + 1}</span>
+              <span class="step__icon" aria-hidden="true">
+                <Icon name={step.icon} size="1.5rem" />
+              </span>
+            </div>
+            <h3 class="step__title">{step.title}</h3>
+            <p class="step__text">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    background: var(--cream-panel);
+  }
+
+  .how__head {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto 2.5rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+  .how__head h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0;
+  }
+
+  .how__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.5rem;
+    counter-reset: step;
+  }
+
+  .step {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    text-align: center;
+  }
+
+  .step__top {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--brown);
+  }
+  .step__num {
+    position: absolute;
+    top: -0.4rem;
+    right: -0.4rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--rust);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  .step__icon {
+    display: inline-flex;
+  }
+
+  .step__title {
+    font-size: 1.2rem;
+    margin: 0 0 0.4rem;
+  }
+  .step__text {
+    color: var(--ink-soft);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+</style>

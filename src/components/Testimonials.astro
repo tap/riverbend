@@ -1,0 +1,131 @@
+---
+// Testimonials section (PROJECT_BRIEF.md §6 #5). id="testimonials" is what the
+// header "Reviews" nav link scrolls to. A "Read more on Google" link appears once
+// the owner's Google Business Profile URL is set in business.ts.
+
+import { testimonials } from "../data/testimonials.ts";
+import { business } from "../data/business.ts";
+import Icon from "./Icon.astro";
+---
+
+<section id="testimonials" class="reviews">
+  <div class="container">
+    <header class="reviews__head">
+      <p class="eyebrow">What neighbors say</p>
+      <h2>Trusted by homeowners across the Northland</h2>
+    </header>
+
+    <ul class="reviews__grid" role="list">
+      {
+        testimonials.map((t) => (
+          <li class="review">
+            <div class="review__stars" aria-label={`${t.rating} out of 5 stars`}>
+              {Array.from({ length: t.rating }).map(() => (
+                <Icon name="star" size="1.1rem" />
+              ))}
+            </div>
+            <blockquote class="review__quote">"{t.quote}"</blockquote>
+            <p class="review__by">
+              <span class="review__name">{t.name}</span>
+              <span class="review__loc">{t.location}</span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      business.social.googleBusiness && (
+        <p class="reviews__more">
+          <a href={business.social.googleBusiness}>Read more reviews on Google →</a>
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .reviews {
+    padding-block: clamp(3rem, 8vw, 5rem);
+    background: var(--cream-panel);
+  }
+
+  .reviews__head {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto 2.5rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+  .reviews__head h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0;
+  }
+
+  .reviews__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.25rem;
+  }
+
+  .review {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .review__stars {
+    display: flex;
+    gap: 0.15rem;
+    color: #e6a817; /* warm gold for the stars */
+  }
+  /* Fill the stars rather than just outline them. */
+  .review__stars :global(svg) {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .review__quote {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .review__by {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .review__name {
+    font-weight: 700;
+    color: var(--brown);
+  }
+  .review__loc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .reviews__more {
+    text-align: center;
+    margin: 2rem 0 0;
+  }
+  .reviews__more a {
+    color: var(--rust-dark);
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

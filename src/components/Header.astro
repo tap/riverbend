@@ -8,12 +8,14 @@ import { Image } from "astro:assets";
 import logo from "../assets/riverbend-logo.jpg";
 import { business } from "../data/business.ts";
 
+// Root-relative ("/#…") so section links work from sub-pages too (e.g. /about),
+// not just the homepage. About and FAQ are their own pages.
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "About", href: "#about" },
-  { label: "Reviews", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "About", href: "/about" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/#contact" },
 ];
 ---
 

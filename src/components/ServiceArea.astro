@@ -1,0 +1,95 @@
+---
+// Service Area section (PROJECT_BRIEF.md §6 #6). A simple, scannable list of the
+// towns covered — good for local SEO and answering "do they come to my town?".
+// City list lives in business.ts (single source of truth).
+
+import { business } from "../data/business.ts";
+import Icon from "./Icon.astro";
+---
+
+<section id="service-area" class="area">
+  <div class="container area__inner">
+    <header class="area__head">
+      <p class="eyebrow">Where we work</p>
+      <h2>Serving the {business.serviceArea}</h2>
+      <p class="area__intro">
+        Based in {business.location}, we cover the Northland and surrounding communities.
+      </p>
+    </header>
+
+    <ul class="area__cities" role="list">
+      {
+        business.serviceAreaCities.map((city) => (
+          <li class="city">
+            <Icon name="pin" size="1.1rem" />
+            <span>{city}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="area__note">
+      Don't see your town? <a href={business.phone.href}>Give us a call</a> — if you're
+      nearby, there's a good chance we can help.
+    </p>
+  </div>
+</section>
+
+<style>
+  .area {
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+
+  .area__head {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto 2rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+  .area__head h2 {
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    margin: 0 0 0.75rem;
+  }
+  .area__intro {
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .area__cities {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 50rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.6rem;
+  }
+  .city {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: var(--cream-panel);
+    border-radius: var(--radius);
+    color: var(--brown);
+    font-weight: 600;
+  }
+
+  .area__note {
+    text-align: center;
+    margin: 2rem 0 0;
+    color: var(--ink-soft);
+  }
+  .area__note a {
+    color: var(--rust-dark);
+    font-weight: 700;
+  }
+</style>

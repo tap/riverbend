@@ -24,6 +24,19 @@ export const business = {
 
   serviceArea: "Kansas City metro",
 
+  // Cities/towns covered, shown in the Service Area section. PLACEHOLDER list from
+  // the brief's Northland examples — TODO(owner): confirm the real coverage area.
+  serviceAreaCities: [
+    "Kansas City",
+    "North Kansas City",
+    "Gladstone",
+    "Liberty",
+    "Smithville",
+    "Parkville",
+    "Riverside",
+    "Pleasant Valley",
+  ],
+
   // ── Still to confirm with the owner (PROJECT_BRIEF.md §4 & §11) ──
   // Leave as empty strings/null until provided; templates check before rendering.
   email: "", // TODO(owner): confirm email address

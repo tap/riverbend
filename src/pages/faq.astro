@@ -1,0 +1,134 @@
+---
+// FAQ page. The visible accordion uses native <details>/<summary> (zero JS).
+// We also emit FAQPage JSON-LD so search engines can show rich FAQ results.
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { faqs } from "../data/faq.ts";
+import { business } from "../data/business.ts";
+
+// Structured data: https://schema.org/FAQPage — built from the same `faqs` source.
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<BaseLayout
+  title="FAQ"
+  description="Answers to common questions about River Bend Handyman — service area, pricing, estimates, licensing, and the kinds of jobs we take on."
+>
+  <section class="faq">
+    <div class="container faq__inner">
+      <header class="faq__head">
+        <p class="eyebrow">Questions &amp; answers</p>
+        <h1>Frequently asked questions</h1>
+      </header>
+
+      <div class="faq__list">
+        {
+          faqs.map((f) => (
+            <details class="qa">
+              <summary class="qa__q">
+                <span>{f.q}</span>
+                <span class="qa__chev" aria-hidden="true" />
+              </summary>
+              <p class="qa__a">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+
+      <p class="faq__cta">
+        Still have a question? <a href={business.phone.href}>Call us at {business.phone.display}</a>
+        — we're happy to help.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ structured data for search engines -->
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</BaseLayout>
+
+<style>
+  .faq {
+    padding-block: clamp(2.5rem, 7vw, 4.5rem);
+  }
+  .faq__inner {
+    max-width: 46rem;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--rust-dark);
+    margin: 0 0 0.5rem;
+  }
+  .faq__head {
+    margin-bottom: 2rem;
+  }
+  .faq__head h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0;
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .qa {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    overflow: hidden;
+  }
+  .qa__q {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    font-weight: 700;
+    color: var(--brown);
+  }
+  .qa__q::-webkit-details-marker {
+    display: none;
+  }
+  /* Chevron that rotates when the item is open. */
+  .qa__chev {
+    flex-shrink: 0;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid var(--rust);
+    border-bottom: 2px solid var(--rust);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  .qa[open] .qa__chev {
+    transform: rotate(-135deg);
+  }
+  .qa__a {
+    margin: 0;
+    padding: 0 1.25rem 1.2rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .faq__cta {
+    margin-top: 2rem;
+    color: var(--ink-soft);
+  }
+  .faq__cta a {
+    color: var(--rust-dark);
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>

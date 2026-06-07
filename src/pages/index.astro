@@ -6,6 +6,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import TrustStrip from "../components/TrustStrip.astro";
 import Services from "../components/Services.astro";
+import Gallery from "../components/Gallery.astro";
+import Testimonials from "../components/Testimonials.astro";
+import ServiceArea from "../components/ServiceArea.astro";
+import HowItWorks from "../components/HowItWorks.astro";
 import Contact from "../components/Contact.astro";
 import { business } from "../data/business.ts";
 ---
@@ -37,6 +41,14 @@ import { business } from "../data/business.ts";
   <TrustStrip />
 
   <Services />
+
+  <Gallery />
+
+  <Testimonials />
+
+  <ServiceArea />
+
+  <HowItWorks />
 
   <Contact />
 </BaseLayout>
