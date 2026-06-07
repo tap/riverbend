@@ -1,0 +1,237 @@
+---
+// Site header: appears on every page via BaseLayout.
+// Priorities (PROJECT_BRIEF.md §10): the phone number is tappable and always
+// visible; the "Get a Quote" CTA is obvious. Nav points at homepage sections
+// for now (single scrolling page); we'll repoint to real page URLs as we build them.
+
+import { Image } from "astro:assets";
+import logo from "../assets/riverbend-logo.jpg";
+import { business } from "../data/business.ts";
+
+const navLinks = [
+  { label: "Services", href: "#services" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "About", href: "#about" },
+  { label: "Reviews", href: "#testimonials" },
+  { label: "Contact", href: "#contact" },
+];
+---
+
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="wordmark" aria-label={`${business.name} — home`}>
+      <Image
+        src={logo}
+        alt={`${business.name}, ${business.location}`}
+        width={128}
+        height={128}
+        class="wordmark__img"
+      />
+      <span class="wordmark__text">
+        <span class="wordmark__name">River Bend Handyman</span>
+        <span class="wordmark__sub">Kansas City, MO</span>
+      </span>
+    </a>
+
+    <!-- Desktop navigation (hidden on narrow screens) -->
+    <nav class="nav" aria-label="Primary">
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="actions">
+      <a href={business.phone.href} class="phone">📞 {business.phone.display}</a>
+      <a href="#contact" class="btn btn--primary">Get a Quote</a>
+    </div>
+
+    <!-- Mobile menu: native <details> = a zero-JS, keyboard-accessible disclosure.
+         Tapping the hamburger opens the panel; tapping again (or elsewhere) closes it. -->
+    <details class="menu">
+      <summary class="menu__btn" aria-label="Menu">
+        <span class="menu__icon" aria-hidden="true"></span>
+      </summary>
+      <nav class="menu__panel" aria-label="Primary">
+        {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+        <hr class="menu__divider" />
+        <a href={business.phone.href} class="menu__phone">📞 {business.phone.display}</a>
+        <a href="#contact" class="btn btn--primary menu__quote">Get a Quote</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--cream);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding-block: 0.75rem;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+  }
+  .wordmark__img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%; /* logo art is a circular badge on white — crop to the circle */
+    flex-shrink: 0;
+  }
+  .wordmark__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  .wordmark__name {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--brown);
+    letter-spacing: 0.01em;
+  }
+  .wordmark__sub {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .nav {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .nav a:hover {
+    color: var(--rust-dark);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+  }
+  .phone {
+    font-weight: 700;
+    color: var(--brown);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .phone:hover {
+    color: var(--rust-dark);
+  }
+
+  /* ── Mobile menu (the <details> element). Hidden on desktop. ── */
+  .menu {
+    display: none;
+    position: relative;
+    margin-left: auto;
+  }
+
+  /* The hamburger button. Remove the default disclosure triangle. */
+  .menu__btn {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.6rem 0.4rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .menu__btn::-webkit-details-marker {
+    display: none;
+  }
+  /* Three-bar icon drawn with a center bar + ::before/::after for the other two. */
+  .menu__icon,
+  .menu__icon::before,
+  .menu__icon::after {
+    display: block;
+    width: 26px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--brown);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .menu__icon {
+    position: relative;
+  }
+  .menu__icon::before,
+  .menu__icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  .menu__icon::before { top: -8px; }
+  .menu__icon::after { top: 8px; }
+  /* When open, morph the hamburger into an X. */
+  .menu[open] .menu__icon { background: transparent; }
+  .menu[open] .menu__icon::before { transform: translateY(8px) rotate(45deg); }
+  .menu[open] .menu__icon::after { transform: translateY(-8px) rotate(-45deg); }
+
+  /* The dropdown panel of links. */
+  .menu__panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.6rem);
+    min-width: 14rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.6rem;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    z-index: 60;
+  }
+  .menu__panel > a:not(.btn) {
+    padding: 0.75rem 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .menu__panel > a:not(.btn):hover {
+    background: var(--cream-panel);
+    color: var(--rust-dark);
+  }
+  .menu__divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0.4rem 0;
+  }
+  .menu__phone {
+    color: var(--brown) !important;
+    font-weight: 800 !important;
+  }
+  .menu__quote {
+    justify-content: center;
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 700px) {
+    .wordmark__img { width: 48px; height: 48px; }
+    .wordmark__name { font-size: 1rem; }
+    /* Swap desktop nav/actions for the hamburger. */
+    .nav,
+    .actions {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+  }
+</style>

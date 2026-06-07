@@ -1,0 +1,111 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Global styles: brand tokens, reset, and base element styling.
+   Loaded once by BaseLayout.astro so every page inherits it.
+
+   Component-specific styling does NOT go here — it lives in <style> blocks
+   inside each .astro component, where Astro automatically scopes it.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Brand palette — earthy, warm, anchored on the logo's brown.
+     --brown is sampled directly from src/assets/riverbend-logo.jpg. */
+  --brown: #3c2a1c;          /* primary dark brown (exact logo color) */
+  --brown-dark: #281b11;     /* darker brown for hovers / footer */
+  --rust: #b9602e;           /* warm accent for primary CTAs */
+  --rust-dark: #9c4f24;
+  --cream: #faf6ef;          /* page background */
+  --cream-panel: #f1e9dc;    /* subtle panel fill */
+  --ink: #2c2218;            /* body text */
+  --ink-soft: #5c5044;       /* secondary text */
+  --line: #e0d6c7;           /* hairline borders */
+
+  /* Type */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-head: var(--font-body); /* TODO: optional sturdy display font later */
+
+  /* Layout */
+  --maxw: 72rem;             /* max content width */
+  --pad: clamp(1rem, 4vw, 2rem); /* responsive side padding */
+  --radius: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  line-height: 1.15;
+  color: var(--brown);
+  margin: 0 0 0.5em;
+}
+
+a {
+  color: var(--rust-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Centered content column, reused across sections. */
+.container {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+/* Shared button styles — `.btn` base, with `--primary` / `--ghost` variants. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius);
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn--primary {
+  background: var(--rust);
+  color: #fff;
+}
+.btn--primary:hover {
+  background: var(--rust-dark);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--brown);
+  border-color: var(--brown);
+}
+.btn--ghost:hover {
+  background: var(--brown);
+  color: #fff;
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}

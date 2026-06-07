@@ -1,0 +1,95 @@
+---
+// Site footer: appears on every page. Repeats the NAP (so it's findable from any
+// page) and the "Licensed & Insured" line. Reads everything from business.ts.
+// Social / email links only render once their values are filled in.
+
+import { business } from "../data/business.ts";
+
+const year = 2026; // TODO: keep current; safe to hardcode for a brochure site
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div>
+      <p class="biz">{business.name}</p>
+      <p class="muted">Licensed &amp; Insured</p>
+    </div>
+
+    <div>
+      <p class="label">Contact</p>
+      <p><a href={business.phone.href}>{business.phone.display}</a></p>
+      {business.email && <p><a href={`mailto:${business.email}`}>{business.email}</a></p>}
+    </div>
+
+    <div>
+      <p class="label">Hours</p>
+      <p>{business.hours}</p>
+      <p class="label" style="margin-top: 0.75rem;">Service area</p>
+      <p>{business.serviceArea}</p>
+    </div>
+
+    {
+      (business.social.facebook || business.social.googleBusiness) && (
+        <div>
+          <p class="label">Find us</p>
+          {business.social.facebook && <p><a href={business.social.facebook}>Facebook</a></p>}
+          {business.social.googleBusiness && <p><a href={business.social.googleBusiness}>Google reviews</a></p>}
+        </div>
+      )
+    }
+  </div>
+
+  <div class="container copyright">
+    <p>© {year} {business.name}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--brown-dark);
+    color: var(--cream);
+    margin-top: 4rem;
+    padding-block: 2.5rem 1.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1.5rem 2rem;
+  }
+
+  .biz {
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem;
+  }
+  .label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #cbb9a3;
+    margin: 0 0 0.35rem;
+  }
+  .muted {
+    color: #cbb9a3;
+    margin: 0;
+  }
+  .grid p {
+    margin: 0.15rem 0;
+  }
+  .site-footer a {
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .copyright {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.85rem;
+    color: #cbb9a3;
+  }
+</style>
